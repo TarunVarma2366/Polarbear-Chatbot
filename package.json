@@ -1,0 +1,37 @@
+{
+  "name": "polar-bear-chatbot",
+  "version": "1.0.0",
+  "description": "A responsive polar bear chatbot with AI integration for Arctic intake conversations",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static files'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "chatbot",
+    "polar-bear",
+    "arctic",
+    "ai",
+    "openai",
+    "responsive",
+    "javascript",
+    "indexeddb"
+  ],
+  "author": "Polar Bear Chatbot Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/polar-bear-chatbot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/polar-bear-chatbot/issues"
+  },
+  "homepage": "https://github.com/your-username/polar-bear-chatbot#readme"
+}
