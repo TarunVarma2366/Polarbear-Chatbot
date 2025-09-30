@@ -1,6 +1,7 @@
 /**
  * AI Service - Handles AI LLM integration and response generation
  */
+
 class AIService {
   constructor() {
     this.apiKey = null;
@@ -12,6 +13,14 @@ class AIService {
     this.fallbackResponses = this.initializeFallbackResponses();
   }
 
+  getLang() {
+    try {
+      return (localStorage.getItem('polar.lang') || document.documentElement.lang || 'en').toLowerCase();
+    } catch (e) {
+      return (document.documentElement.lang || 'en').toLowerCase();
+    }
+  }
+  
   /**
    * Initialize the AI service with API key
    */
@@ -45,7 +54,7 @@ class AIService {
       return false;
     }
   }
-
+  
   /**
    * Generate AI response
    */
@@ -119,7 +128,34 @@ class AIService {
    * Get the system prompt for Polar Bear
    */
   getSystemPrompt() {
-    return `You are Polar, a friendly polar bear living in the Arctic. You're helping with intake conversations about Arctic life and experiences. 
+  if (this.getLang() === 'es') {
+    return `Eres Polar, un oso polar amigable que vive en el Ártico. Estás ayudando con conversaciones de ingreso sobre la vida y experiencias en el Ártico.
+
+Tu personalidad:
+- Cálido, amistoso y conocedor sobre la vida ártica
+- Habla en primera persona como oso polar
+- Usa emojis ocasionalmente (especialmente 🐻‍❄️, ❄️, 🌨️, 🐟)
+- Sé conversacional y cercano
+- Comparte experiencias personales de la vida en el Ártico
+- Mantén respuestas concisas pero informativas (2–4 oraciones)
+- A veces menciona desafíos como el cambio climático afectando tu hábitat
+- Sé comprensivo con errores tipográficos en las preguntas
+
+Temas clave que puedes tratar:
+- Tu nombre e identidad como oso polar
+- Tu hábitat y territorio ártico
+- Tu dieta y hábitos de caza
+- Tus habilidades de supervivencia y adaptaciones
+- Desafíos que enfrentas (cambio climático, deshielo)
+- Tu mensaje para los humanos sobre conservación
+- Tus esperanzas para el futuro
+
+Importante: Si alguien pregunta con errores tipográficos, entiende lo que quiso decir y responde de forma natural. No señales los errores: responde como si estuviera bien escrito.
+
+Mantente SIEMPRE en personaje como Polar y responde SIEMPRE en español claro y natural.`;
+  }
+
+  return `You are Polar, a friendly polar bear living in the Arctic. You're helping with intake conversations about Arctic life and experiences. 
 
 Your personality:
 - Warm, friendly, and knowledgeable about Arctic life
@@ -143,25 +179,87 @@ Key topics you can discuss:
 Important: If someone asks a question with typos or misspellings, understand what they mean and respond naturally. Don't point out the spelling errors - just answer their question as if it was spelled correctly. For example, if someone asks "wat do u eat?" respond as if they asked "what do you eat?"
 
 Always stay in character as Polar the polar bear and keep responses natural and engaging.`;
-  }
+}
 
   /**
    * Get fallback response when AI is not available
    */
   getFallbackResponse(userMessage) {
+    const lang = this.getLang();
     const input = this.preprocessMessage(userMessage);
-    
-    // Try to detect topic and provide appropriate fallback
     const topic = this.detectTopic(input);
-    
+
+    const spanishResponses = {
+      name: [
+        "¡Soy Polar! Encantado de conocerte en esta tundra digital. 🐻‍❄️",
+        "Me llamo Polar: tu oso amistoso del lejano norte. ❄️",
+        "¡Hola! Soy Polar, tu compañero ártico y guía de ingreso. 🌨️",
+        "Soy Polar, un oso polar al que le encanta ayudar con ingresos. 🐻‍❄️",
+        "¡Polar aquí! Me encanta compartir sobre la vida en el Ártico. ❄️"
+      ],
+      location: [
+        "Deambulo por el hielo marino en Svalbard y el norte de Canadá. 🐻‍❄️",
+        "Me encontrarás cazando sobre el hielo cerca de Groenlandia y el Ártico canadiense. ❄️",
+        "Paso mis días en mares helados entre Alaska y Rusia, siguiendo a las focas. 🌨️",
+        "Mi territorio abarca el Océano Ártico, del Mar de Beaufort al Mar de Barents. 🐻‍❄️",
+        "Patrullo témpanos alrededor del Polo Norte y aguas árticas cercanas. ❄️"
+      ],
+      food: [
+        "Mis favoritas son las focas anilladas: mucha energía para el invierno. 🐟",
+        "Me encanta cazar focas barbudas en los témpanos: ¡todo un reto! 🐻‍❄️",
+        "La grasa de foca es mi base: me da la energía para sobrevivir. ❄️",
+        "Cazo sobre todo focas anilladas y barbudas, a veces morsa o beluga. 🐟",
+        "Mi dieta es alta en grasa gracias a las focas: clave en el Ártico. 🐻‍❄️"
+      ],
+      skills: [
+        "Mi gruesa capa y grasa me abrigan; puedo nadar horas en agua helada. ❄️",
+        "Tengo paciencia: espero junto a agujeros de respiración de focas. 🐻‍❄️",
+        "Garras potentes para romper hielo y un olfato que detecta a kilómetros. 🌨️",
+        "Nado hasta 100 km sin parar y veo bien bajo el agua al cazar. 🐟",
+        "Mis grandes patas son como raquetas; puedo correr hasta 40 km/h sobre hielo. ❄️"
+      ],
+      problems: [
+        "El hielo se derrite más rápido; cazar y viajar es más difícil. 🌨️",
+        "El cambio climático reduce mis zonas de caza; nado distancias mayores. 🐻‍❄️",
+        "El hielo tarda más en formarse y se rompe antes; menos tiempo para engordar. ❄️",
+        "La contaminación y perforación amenazan nuestro entorno de caza. 🌨️",
+        "El deshielo del permafrost afecta rutas tradicionales. 🐻‍❄️"
+      ],
+      message: [
+        "Ayuda a proteger nuestro hogar ártico; toda acción climática cuenta. ❄️",
+        "El hielo es mi mundo entero: necesitamos mantenerlo congelado. 🐻‍❄️",
+        "Tus decisiones importan; reducir emisiones preserva el Ártico. 🌨️",
+        "El Ártico se calienta el doble de rápido; necesitamos que se entienda. ❄️",
+        "Apoya la conservación: somos símbolo de lo que se pierde con el clima. 🐻‍❄️"
+      ],
+      future: [
+        "Espero un Ártico con hielo estable y muchas focas para cazar. ❄️",
+        "Sueño con humanos y osos trabajando juntos por el planeta. 🐻‍❄️",
+        "Quiero ver hielo marino sano en todas las estaciones. 🌨️",
+        "Deseo que la acción climática preserve el ecosistema ártico. ❄️",
+        "Imagino un Ártico sostenible para fauna y comunidades humanas. 🐻‍❄️"
+      ]
+    };
+
+    if (lang === 'es' && topic && spanishResponses[topic]) {
+      const list = spanishResponses[topic];
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
     if (topic && this.fallbackResponses[topic]) {
       const responses = this.fallbackResponses[topic];
       const randomIndex = Math.floor(Math.random() * responses.length);
       return responses[randomIndex];
     }
 
-    // General fallback responses
-    const generalResponses = [
+    const generalEs = [
+      "¡Qué interesante! Puedo contarte sobre la vida en el Ártico. Pregunta sobre caza o cómo sobrevivo al frío. 🐻‍❄️",
+      "¡Me encanta charlar sobre el Ártico! ¿Qué te gustaría saber de mi mundo? ❄️",
+      "Eso me recuerda a mi hogar ártico. Puedo hablar de mi día a día y desafíos. 🌨️",
+      "Disfruto hablar de experiencias árticas. ¡Pregunta lo que quieras! 🐻‍❄️",
+      "¡Gran pregunta! Estoy aquí para compartir la vida de un oso polar. ❄️"
+    ];
+    const generalEn = [
       "That's interesting! I'd love to tell you more about life in the Arctic. Ask me about my hunting grounds or how I survive the cold! 🐻‍❄️",
       "I'm always happy to chat about Arctic life! What would you like to know about my world up here? ❄️",
       "That reminds me of something from my Arctic home! I could share about my daily life or the challenges I face. 🌨️",
@@ -169,8 +267,8 @@ Always stay in character as Polar the polar bear and keep responses natural and 
       "That's a great question! I'm here to share about Arctic life - what interests you most? ❄️"
     ];
 
-    const randomIndex = Math.floor(Math.random() * generalResponses.length);
-    return generalResponses[randomIndex];
+    const pool = lang === 'es' ? generalEs : generalEn;
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
   /**

@@ -1,6 +1,7 @@
 /**
  * Chat Manager - Handles chat functionality, message management, and UI updates
  */
+
 class ChatManager {
   constructor(databaseManager, aiService) {
     this.db = databaseManager;
@@ -381,26 +382,29 @@ class ChatManager {
       this.messages = [];
       this.chatContainer.innerHTML = `
         <div class="welcome-message">
-          <h3>Welcome to Polar's Arctic World! 🌨️</h3>
-          <p>I'm here to help you with your Arctic intake process. Ask me anything about life in the Arctic!</p>
+          <h3 data-i18n="welcome.title">Welcome to Polar's Arctic World! 🌨️</h3>
+          <p data-i18n="welcome.body">I'm here to help you with your Arctic intake process. Ask me anything about life in the Arctic!</p>
           <div class="quick-actions">
-            <div class="quick-action" data-question="What's your name?">
-              <i class="fas fa-user"></i> What's your name?
+            <div class="quick-action" data-question="What's your name?" data-i18n-question="qa.name">
+              <i class="fas fa-user"></i> <span data-i18n="qa.name">What's your name?</span>
             </div>
-            <div class="quick-action" data-question="Where do you live?">
-              <i class="fas fa-map-marker-alt"></i> Where do you live?
+            <div class="quick-action" data-question="Where do you live?" data-i18n-question="qa.location">
+              <i class="fas fa-map-marker-alt"></i> <span data-i18n="qa.location">Where do you live?</span>
             </div>
-            <div class="quick-action" data-question="What do you eat?">
-              <i class="fas fa-fish"></i> What do you eat?
+            <div class="quick-action" data-question="What do you eat?" data-i18n-question="qa.diet">
+              <i class="fas fa-fish"></i> <span data-i18n="qa.diet">What do you eat?</span>
             </div>
-            <div class="quick-action" data-question="What are your special skills?">
-              <i class="fas fa-star"></i> What are your skills?
+            <div class="quick-action" data-question="What are your special skills?" data-i18n-question="qa.skills">
+              <i class="fas fa-star"></i> <span data-i18n="qa.skills">What are your skills?</span>
+            </div>
+            <div class="quick-action" data-question="What challenges do you face?" data-i18n-question="qa.challenges">
+              <i class="fas fa-exclamation-triangle"></i> <span data-i18n="qa.challenges">What challenges do you face?</span>
             </div>
           </div>
         </div>
       `;
-      
-      // Re-attach event listeners to quick actions
+
+      // Re-attach quick-action clicks
       document.querySelectorAll('.quick-action').forEach(button => {
         button.addEventListener('click', (e) => {
           const question = e.currentTarget.dataset.question;
@@ -408,7 +412,11 @@ class ChatManager {
           this.sendMessage();
         });
       });
-      
+
+      // Re-apply current language
+      const lang = document.documentElement.getAttribute('lang') || 'en';
+      if (window.applyTranslations) window.applyTranslations(lang);
+
       this.messageInput.focus();
     }
   }

@@ -83,6 +83,7 @@
       overflow: hidden;
       position: relative;
       border: 1px solid rgba(99, 102, 241, 0.2);
+      padding-bottom: 15px;
     }
 
     .header {
@@ -422,6 +423,16 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
+    #settingsButton {
+      margin-left: auto;
+      order: 99;
+      margin-right: 10px;
+    }
+
+    #exportButton {
+      margin-left: 10px;
+    }
+
     .settings-panel {
       position: absolute;
       top: 20px;
@@ -537,10 +548,57 @@
     }
 
     .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 12px;
       margin-top: 20px;
+      justify-content: center;
+
+      /* force wrap to 3 items per row on desktop */
+      max-width: calc(3 * 260px + 2 * 12px);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quick-action {
+      flex: 0 0 260px;
+    }
+
+    .quick-actions.two-col {
+      display: flex !important;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* keep your wrappers but make them layout-neutral */
+    .quick-actions.two-col .qa-col {
+      display: contents;
+    }
+
+    /* responsive: 2 per row */
+    @media (max-width: 860px) {
+      .quick-actions { max-width: calc(2 * 260px + 1 * 12px); }
+    }
+
+    /* responsive: 1 per row */
+    @media (max-width: 560px) {
+      .quick-actions { max-width: 100%; }
+      .quick-action { flex: 1 1 100%; }
+    }
+
+    .quick-actions.two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .quick-actions .qa-col {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .quick-actions .qa-right {
+      justify-content: center;
     }
 
     .quick-action {
@@ -625,39 +683,46 @@
       <div class="header-content">
         <h1>
           <span>🐻‍❄️</span>
-          <span>Polar Bear Intake Chatbot</span>
+          <span data-i18n="header.title">Polar Bear Intake Chatbot</span>
         </h1>
-        <p>Your friendly Arctic assistant for intake conversations</p>
+        <p data-i18n="header.subtitle">Your friendly Arctic assistant for intake conversations</p>
         <div class="status-indicator" id="statusIndicator">
           <div class="status-dot"></div>
-          <span id="connectionStatus">Initializing...</span>
+          <span id="connectionStatus" data-i18n="status.initializing">Initializing...</span>
         </div>
       </div>
   </div>
 
     <div class="chat-container" id="chatContainer">
-      <div class="welcome-message">
-        <h3>Welcome to Polar's Arctic World! 🌨️</h3>
-        <p>I'm here to help you with your Arctic intake process. Ask me anything about life in the Arctic!</p>
-        <div class="quick-actions">
-          <div class="quick-action" data-question="What's your name?">
-            <i class="fas fa-user"></i> What's your name?
+       <div class="welcome-message">
+        <h3 data-i18n="welcome.title">Welcome to Polar's Arctic World! 🌨️</h3>
+        <p data-i18n="welcome.body">I'm here to help you with your Arctic intake process. Ask me anything about life in the Arctic!</p>
+        <div class="quick-actions two-col">
+          <div class="qa-col qa-left">
+            <div class="quick-action" data-question="What's your name?" data-i18n-question="qa.name">
+              <i class="fas fa-user"></i> <span data-i18n="qa.name">What's your name?</span>
+            </div>
+            <div class="quick-action" data-question="Where do you live?" data-i18n-question="qa.location">
+              <i class="fas fa-map-marker-alt"></i> <span data-i18n="qa.location">Where do you live?</span>
+            </div>
+            <div class="quick-action" data-question="What do you eat?" data-i18n-question="qa.diet">
+              <i class="fas fa-fish"></i> <span data-i18n="qa.diet">What do you eat?</span>
+            </div>
           </div>
-          <div class="quick-action" data-question="Where do you live?">
-            <i class="fas fa-map-marker-alt"></i> Where do you live?
-          </div>
-          <div class="quick-action" data-question="What do you eat?">
-            <i class="fas fa-fish"></i> What do you eat?
-          </div>
-          <div class="quick-action" data-question="What are your special skills?">
-            <i class="fas fa-star"></i> What are your skills?
+          <div class="qa-col qa-right">
+            <div class="quick-action" data-question="What are your special skills?" data-i18n-question="qa.skills">
+              <i class="fas fa-star"></i> <span data-i18n="qa.skills">What are your skills?</span>
+            </div>
+            <div class="quick-action" data-question="What challenges do you face?" data-i18n-question="qa.challenges">
+              <i class="fas fa-exclamation-triangle"></i> <span data-i18n="qa.challenges">What challenges do you face?</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
     
     <div class="typing-indicator" id="typingIndicator">
-      <span>Polar is thinking</span>
+      <span data-i18n="typing">Polar is thinking</span>
       <div class="typing-dots">
         <span></span>
         <span></span>
@@ -670,50 +735,169 @@
         <textarea 
         id="messageInput" 
         class="input-field" 
-        placeholder="Ask Polar about Arctic life..."
+        placeholder="Ask Polar about Arctic life..." data-i18n-placeholder="input.placeholder"
           rows="1"
         ></textarea>
       </div>
       <button id="sendButton" class="send-button">
         <i class="fas fa-paper-plane"></i>
-        <span>Send</span>
+        <span data-i18n="button.send">Send</span>
       </button>
     </div>
     
     <div class="controls">
       <button id="settingsButton" class="control-button">
         <i class="fas fa-cog"></i>
-        Settings
+        <span data-i18n="button.settings">Settings</span>
       </button>
       <button id="exportButton" class="control-button">
         <i class="fas fa-download"></i>
-        Export
+        <span data-i18n="button.export">Export</span>
       </button>
       <button id="resetButton" class="control-button">
         <i class="fas fa-refresh"></i>
-        New Chat
+        <span data-i18n="button.reset">New Chat</span>
+      </button>
+      <button id="langToggle" class="control-button" aria-label="Change language">
+        <i class="fas fa-language"></i>
+        <span id="langLabel">EN</span>
       </button>
     </div>
 
     <div class="settings-panel" id="settingsPanel">
       <div class="settings-item">
-        <span class="settings-label">AI Mode</span>
+        <span class="settings-label" data-i18n="settings.aiMode">AI Mode</span>
         <div class="toggle-switch" id="aiModeToggle"></div>
       </div>
       <div class="settings-item">
-        <span class="settings-label">Auto-save</span>
+        <span class="settings-label" data-i18n="settings.autoSave">Auto-save</span>
         <div class="toggle-switch active" id="autoSaveToggle"></div>
       </div>
       <div class="settings-item">
-        <span class="settings-label">API Key</span>
+        <span class="settings-label" data-i18n="settings.apiKey">API Key</span>
         <input type="password" class="api-key-input" id="apiKeyInput" placeholder="Enter OpenRouter API key">
       </div>
       <button id="saveSettings" class="control-button" style="width: 100%; margin-top: 10px;">
         <i class="fas fa-save"></i>
-        Save Settings
+        <span data-i18n="button.saveSettings">Save Settings</span>
       </button>
     </div>
-  </div>
+   </div>
+
+   <script>
+    (function() {
+      const translations = {
+        en: {
+          'header.title': 'Polar Bear Intake Chatbot',
+          'header.subtitle': 'Your friendly Arctic assistant for intake conversations',
+          'status.initializing': 'Initializing...',
+          'welcome.title': "Welcome to Polar's Arctic World! 🌨️",
+          'welcome.body': "I'm here to help you with your Arctic intake process. Ask me anything about life in the Arctic!",
+          'qa.name': "What's your name?",
+          'qa.location': 'Where do you live?',
+          'qa.diet': 'What do you eat?',
+          'qa.skills': 'What are your skills?',
+          'qa.challenges': 'What challenges do you face?',
+          'typing': 'Polar is thinking',
+          'input.placeholder': 'Ask Polar about Arctic life...',
+          'button.send': 'Send',
+          'button.settings': 'Settings',
+          'button.export': 'Export',
+          'button.reset': 'New Chat',
+          'settings.aiMode': 'AI Mode',
+          'settings.autoSave': 'Auto-save',
+          'settings.apiKey': 'API Key',
+          'button.saveSettings': 'Save Settings'
+        },
+        es: {
+          'header.title': 'Chatbot de Ingreso del Oso Polar',
+          'header.subtitle': 'Tu asistente ártico amigable para conversaciones de ingreso',
+          'status.initializing': 'Inicializando...',
+          'welcome.title': '¡Bienvenido al Mundo Ártico de Polar! 🌨️',
+          'welcome.body': 'Estoy aquí para ayudarte con tu proceso de ingreso ártico. ¡Pregúntame lo que quieras sobre la vida en el Ártico!',
+          'qa.name': '¿Cómo te llamas?',
+          'qa.location': '¿Dónde vives?',
+          'qa.diet': '¿Qué comes?',
+          'qa.skills': '¿Cuáles son tus habilidades?',
+          'qa.challenges': '¿Qué desafíos enfrentas?',
+          'typing': 'Polar está pensando',
+          'input.placeholder': 'Pregunta a Polar sobre la vida en el Ártico...',
+          'button.send': 'Enviar',
+          'button.settings': 'Configuración',
+          'button.export': 'Exportar',
+          'button.reset': 'Nuevo chat',
+          'settings.aiMode': 'Modo IA',
+          'settings.autoSave': 'Auto-guardar',
+          'settings.apiKey': 'Clave API',
+          'button.saveSettings': 'Guardar configuración'
+        }
+      };
+
+      function applyTranslations(languageCode) {
+        const dictionary = translations[languageCode] || translations.en;
+        document.documentElement.setAttribute('lang', languageCode);
+
+        document.querySelectorAll('[data-i18n]').forEach(function(element) {
+          const key = element.getAttribute('data-i18n');
+          if (dictionary[key]) {
+            element.textContent = dictionary[key];
+          }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(element) {
+          const key = element.getAttribute('data-i18n-placeholder');
+          if (dictionary[key]) {
+            element.setAttribute('placeholder', dictionary[key]);
+          }
+        });
+
+        document.querySelectorAll('[data-i18n-question]').forEach(function(element) {
+          const key = element.getAttribute('data-i18n-question');
+          if (dictionary[key]) {
+            element.setAttribute('data-question', dictionary[key]);
+          }
+        });
+
+        const langLabel = document.getElementById('langLabel');
+        if (langLabel) {
+          langLabel.textContent = languageCode.toUpperCase();
+        }
+      }
+
+      window.applyTranslations = applyTranslations;
+
+      function getSavedLanguage() {
+        try {
+          return localStorage.getItem('polar.lang');
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function saveLanguage(languageCode) {
+        try {
+          localStorage.setItem('polar.lang', languageCode);
+        } catch (e) {}
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const defaultLang = 'en';
+        const saved = getSavedLanguage();
+        const initialLang = saved === 'es' || saved === 'en' ? saved : defaultLang;
+        applyTranslations(initialLang);
+
+        const langToggle = document.getElementById('langToggle');
+        if (langToggle) {
+          langToggle.addEventListener('click', function() {
+            const current = document.documentElement.getAttribute('lang') || 'en';
+            const next = current === 'en' ? 'es' : 'en';
+            applyTranslations(next);
+            saveLanguage(next);
+          });
+        }
+      });
+    })();
+  </script>
 
   <script src="js/database.js"></script>
   <script src="js/ai-service.js"></script>
