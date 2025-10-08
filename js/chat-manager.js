@@ -23,6 +23,7 @@ class ChatManager {
     this.chatContainer = document.getElementById('chatContainer');
     this.messageInput = document.getElementById('messageInput');
     this.sendButton = document.getElementById('sendButton');
+    this.micButton = document.getElementById('micButton');
     this.typingIndicator = document.getElementById('typingIndicator');
     this.connectionStatus = document.getElementById('connectionStatus');
     this.settingsPanel = document.getElementById('settingsPanel');
@@ -47,6 +48,11 @@ class ChatManager {
 
     // Auto-resize textarea
     this.messageInput.addEventListener('input', () => this.autoResizeTextarea());
+
+    // Mic button
+    if (this.micButton) {
+      this.micButton.addEventListener('click', () => this.toggleVoiceInput());
+    }
 
     // Quick action buttons
     document.querySelectorAll('.quick-action').forEach(button => {
@@ -164,12 +170,14 @@ class ChatManager {
 
     try {
       let response;
-      
-      if (this.aiMode && this.ai.isAvailable) {
-        // Use AI service
+      // Force curated Polar responses for specific topics; otherwise, use AI if available
+      const curatedTopics = ['greeting', 'name', 'location', 'food', 'skills', 'problems', 'message'];
+      const detected = this.ai.detectTopic(this.ai.preprocessMessage(message));
+      if (detected && curatedTopics.includes(detected)) {
+        response = this.ai.getFallbackResponse(message);
+      } else if (this.aiMode && this.ai.isAvailable) {
         response = await this.ai.generateResponse(message, this.messages);
       } else {
-        // Use fallback responses
         response = this.ai.getFallbackResponse(message);
       }
 
@@ -297,6 +305,70 @@ class ChatManager {
   updateToggleStates() {
     this.aiModeToggle.classList.toggle('active', this.aiMode);
     this.autoSaveToggle.classList.toggle('active', this.autoSave);
+  }
+
+  /**
+   * Voice input via Web Speech API
+   */
+  ensureRecognizer() {
+    if (this.recognizer) return this.recognizer;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return null;
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = true;
+    rec.lang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase() === 'es' ? 'es-ES' : 'en-US';
+
+    rec.onstart = () => {
+      if (this.micButton) this.micButton.classList.add('active');
+    };
+    rec.onend = () => {
+      if (this.micButton) this.micButton.classList.remove('active');
+    };
+    rec.onerror = () => {
+      if (this.micButton) this.micButton.classList.remove('active');
+      this.showMessage('Voice input error. Please try again or check permissions.', 'error');
+    };
+    rec.onresult = (event) => {
+      let finalTranscript = '';
+      let interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalTranscript += transcript;
+        else interimTranscript += transcript;
+      }
+      const text = (finalTranscript || interimTranscript).trim();
+      if (text) {
+        this.messageInput.value = text;
+        this.autoResizeTextarea();
+      }
+      if (finalTranscript && finalTranscript.trim()) {
+        this.sendMessage();
+      }
+    };
+
+    this.recognizer = rec;
+    return rec;
+  }
+
+  toggleVoiceInput() {
+    const rec = this.ensureRecognizer();
+    if (!rec) {
+      this.showMessage('Voice input not supported in this browser.', 'error');
+      return;
+    }
+    try {
+      if (this.isListening) {
+        rec.stop();
+        this.isListening = false;
+      } else {
+        rec.lang = (document.documentElement.getAttribute('lang') || 'en').toLowerCase() === 'es' ? 'es-ES' : 'en-US';
+        rec.start();
+        this.isListening = true;
+      }
+    } catch (e) {
+      this.showMessage('Unable to start voice input. Check mic permissions.', 'error');
+    }
   }
 
   /**
