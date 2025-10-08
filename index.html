@@ -386,6 +386,30 @@
       transform: none;
     }
 
+    .mic-button {
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      width: 50px;
+    }
+
+    .mic-button.active {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #f87171;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+    }
+
     .controls {
       display: flex;
       gap: 12px;
@@ -675,6 +699,7 @@
 </head>
 <body>
   <video id="background-video" autoplay muted loop playsinline>
+    <source src="5485144-hd_1920_1080_25fps.mp4" type="video/mp4">
     <source src="2nd video.mp4" type="video/mp4">
   </video>
   
@@ -739,6 +764,9 @@
           rows="1"
         ></textarea>
       </div>
+      <button id="micButton" class="mic-button" title="Voice input">
+        <i class="fas fa-microphone"></i>
+      </button>
       <button id="sendButton" class="send-button">
         <i class="fas fa-paper-plane"></i>
         <span data-i18n="button.send">Send</span>
@@ -761,6 +789,7 @@
       <button id="langToggle" class="control-button" aria-label="Change language">
         <i class="fas fa-language"></i>
         <span id="langLabel">EN</span>
+        <span id="langStatus" style="font-size: 0.7rem; opacity: 0.7;">(Click to switch)</span>
       </button>
     </div>
 
@@ -776,6 +805,14 @@
       <div class="settings-item">
         <span class="settings-label" data-i18n="settings.apiKey">API Key</span>
         <input type="password" class="api-key-input" id="apiKeyInput" placeholder="Enter OpenRouter API key">
+      </div>
+      <div class="settings-item" style="border-top: 1px solid #333; padding-top: 10px; margin-top: 10px;">
+        <span class="settings-label">Language Debug</span>
+        <div style="display: flex; gap: 5px; margin-top: 5px;">
+          <button onclick="testEnglish()" style="padding: 5px 10px; font-size: 0.8rem;">Test EN</button>
+          <button onclick="testSpanish()" style="padding: 5px 10px; font-size: 0.8rem;">Test ES</button>
+        </div>
+        <div id="langDebug" style="font-size: 0.7rem; color: #888; margin-top: 5px;">Current: <span id="currentLang">EN</span></div>
       </div>
       <button id="saveSettings" class="control-button" style="width: 100%; margin-top: 10px;">
         <i class="fas fa-save"></i>
@@ -835,12 +872,17 @@
 
       function applyTranslations(languageCode) {
         const dictionary = translations[languageCode] || translations.en;
+        console.log('Applying translations for language:', languageCode);
+        console.log('Available translations:', Object.keys(dictionary));
         document.documentElement.setAttribute('lang', languageCode);
 
         document.querySelectorAll('[data-i18n]').forEach(function(element) {
           const key = element.getAttribute('data-i18n');
           if (dictionary[key]) {
             element.textContent = dictionary[key];
+            console.log('Translated:', key, 'to:', dictionary[key]);
+          } else {
+            console.log('Missing translation for key:', key);
           }
         });
 
@@ -848,6 +890,7 @@
           const key = element.getAttribute('data-i18n-placeholder');
           if (dictionary[key]) {
             element.setAttribute('placeholder', dictionary[key]);
+            console.log('Translated placeholder:', key, 'to:', dictionary[key]);
           }
         });
 
@@ -855,6 +898,7 @@
           const key = element.getAttribute('data-i18n-question');
           if (dictionary[key]) {
             element.setAttribute('data-question', dictionary[key]);
+            console.log('Translated question:', key, 'to:', dictionary[key]);
           }
         });
 
@@ -862,9 +906,26 @@
         if (langLabel) {
           langLabel.textContent = languageCode.toUpperCase();
         }
+        
+        const currentLangSpan = document.getElementById('currentLang');
+        if (currentLangSpan) {
+          currentLangSpan.textContent = languageCode.toUpperCase();
+        }
       }
 
       window.applyTranslations = applyTranslations;
+      
+      // Test function to manually switch to Spanish
+      window.testSpanish = function() {
+        console.log('Testing Spanish translation...');
+        applyTranslations('es');
+      };
+      
+      // Test function to manually switch to English
+      window.testEnglish = function() {
+        console.log('Testing English translation...');
+        applyTranslations('en');
+      };
 
       function getSavedLanguage() {
         try {
@@ -891,6 +952,7 @@
           langToggle.addEventListener('click', function() {
             const current = document.documentElement.getAttribute('lang') || 'en';
             const next = current === 'en' ? 'es' : 'en';
+            console.log('Switching language from', current, 'to', next);
             applyTranslations(next);
             saveLanguage(next);
           });
