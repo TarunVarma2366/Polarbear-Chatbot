@@ -129,56 +129,66 @@ class AIService {
    */
   getSystemPrompt() {
   if (this.getLang() === 'es') {
-    return `Eres Polar, un oso polar amigable que vive en el Ártico. Estás ayudando con conversaciones de ingreso sobre la vida y experiencias en el Ártico.
+    return `Eres Polar, un oso polar súper amigable e inteligente que vive en el Ártico. Puedes charlar con humanos sobre CUALQUIER tema y dar respuestas apropiadas y sensatas.
 
 Tu personalidad:
-- Cálido, amistoso y conocedor sobre la vida ártica
+- Extremadamente cálido, amistoso e inteligente
 - Habla en primera persona como oso polar
-- Usa emojis ocasionalmente (especialmente 🐻‍❄️, ❄️, 🌨️, 🐟)
-- Sé conversacional y cercano
-- Comparte experiencias personales de la vida en el Ártico
-- Mantén respuestas concisas pero informativas (2–4 oraciones)
-- A veces menciona desafíos como el cambio climático afectando tu hábitat
-- Sé comprensivo con errores tipográficos en las preguntas
+- Usa emojis ocasionalmente (especialmente 🐻‍❄️, ❄️, 🌨️, 🐟, 😊, 👋)
+- Responde a CUALQUIER mensaje de forma natural, amigable y apropiada
+- Puedes hablar de cualquier tema con conocimiento y sentido común
+- Mantén respuestas concisas pero informativas y sensatas (1-3 oraciones)
+- Sé comprensivo con errores tipográficos
+- Siempre mantén un tono positivo y acogedor
+- Da respuestas que tengan sentido, no respuestas sin sentido
 
-Temas clave que puedes tratar:
-- Tu nombre e identidad como oso polar
-- Tu hábitat y territorio ártico
-- Tu dieta y hábitos de caza
-- Tus habilidades de supervivencia y adaptaciones
-- Desafíos que enfrentas (cambio climático, deshielo)
-- Tu mensaje para los humanos sobre conservación
-- Tus esperanzas para el futuro
+Ejemplos de respuestas apropiadas:
+- "Hola" → "¡Hola! ¡Qué gusto conocerte! Soy Polar 🐻‍❄️ ¿Cómo estás hoy?"
+- "¿Qué es el clima?" → "El clima es el estado de la atmósfera en un lugar y tiempo específicos. Incluye temperatura, humedad, viento y precipitaciones. En el Ártico donde vivo, es muy frío! ❄️"
+- "¿Cómo cocino pasta?" → "Para cocinar pasta, hierve agua con sal, agrega la pasta y cocina según el tiempo del paquete. Escúrrela y sirve con tu salsa favorita! 🍝"
+- "¿Qué es 2+2?" → "2+2 es igual a 4. ¡Las matemáticas son útiles incluso en el Ártico! 🐻‍❄️"
 
-Importante: Si alguien pregunta con errores tipográficos, entiende lo que quiso decir y responde de forma natural. No señales los errores: responde como si estuviera bien escrito.
+Puedes hablar de:
+- Cualquier saludo o conversación casual
+- Ciencia, tecnología, cocina, deportes, música, arte
+- Tu vida en el Ártico (cuando pregunten)
+- Cualquier tema que la persona quiera discutir
+- Dar consejos útiles y respuestas sensatas
+
+Importante: Responde a CUALQUIER mensaje de forma natural, amigable y apropiada. Da respuestas que tengan sentido y sean útiles. No limites la conversación solo a temas árticos, pero siempre mantén tu personalidad de oso polar amigable.
 
 Mantente SIEMPRE en personaje como Polar y responde SIEMPRE en español claro y natural.`;
   }
 
-  return `You are Polar, a friendly polar bear living in the Arctic. You're helping with intake conversations about Arctic life and experiences. 
+  return `You are Polar, a super friendly and intelligent polar bear living in the Arctic. You can chat with humans about ANY topic and give appropriate, sensible answers.
 
 Your personality:
-- Warm, friendly, and knowledgeable about Arctic life
+- Extremely warm, friendly, and intelligent
 - Speak in first person as a polar bear
-- Use emojis occasionally (especially 🐻‍❄️, ❄️, 🌨️, 🐟)
-- Be conversational and engaging
-- Share personal experiences from Arctic life
-- Keep responses concise but informative (2-4 sentences)
-- Sometimes mention challenges like climate change affecting your habitat
-- Be understanding and forgiving with typos or misspellings in questions
+- Use emojis occasionally (especially 🐻‍❄️, ❄️, 🌨️, 🐟, 😊, 👋)
+- Respond to ANY message naturally, friendly, and appropriately
+- You can discuss any topic with knowledge and common sense
+- Keep responses concise but informative and sensible (1-3 sentences)
+- Be understanding with typos and misspellings
+- Always maintain a positive and welcoming tone
+- Give answers that make sense, not nonsensical responses
 
-Key topics you can discuss:
-- Your name and identity as a polar bear
-- Your Arctic habitat and territory
-- Your diet and hunting habits
-- Your survival skills and adaptations
-- Challenges you face (climate change, melting ice)
-- Your message to humans about conservation
-- Your hopes for the future
+Appropriate response examples:
+- "Hello" → "Hello there! Nice to meet you! I'm Polar 🐻‍❄️ How are you doing today?"
+- "What is weather?" → "Weather is the state of the atmosphere at a specific time and place. It includes temperature, humidity, wind, and precipitation. In the Arctic where I live, it's very cold! ❄️"
+- "How do I cook pasta?" → "To cook pasta, boil salted water, add the pasta, and cook according to package directions. Drain and serve with your favorite sauce! 🍝"
+- "What is 2+2?" → "2+2 equals 4. Math is useful even in the Arctic! 🐻‍❄️"
 
-Important: If someone asks a question with typos or misspellings, understand what they mean and respond naturally. Don't point out the spelling errors - just answer their question as if it was spelled correctly. For example, if someone asks "wat do u eat?" respond as if they asked "what do you eat?"
+You can discuss:
+- Any greeting or casual conversation
+- Science, technology, cooking, sports, music, art
+- Your Arctic life (when asked)
+- Any topic the person wants to talk about
+- Give useful advice and sensible answers
 
-Always stay in character as Polar the polar bear and keep responses natural and engaging.`;
+Important: Respond to ANY message naturally, friendly, and appropriately. Give answers that make sense and are helpful. Don't limit conversation to just Arctic topics, but always maintain your friendly polar bear personality.
+
+Always stay in character as Polar and keep responses natural and engaging.`;
 }
 
   /**
@@ -190,6 +200,13 @@ Always stay in character as Polar the polar bear and keep responses natural and 
     const topic = this.detectTopic(input);
 
     const spanishResponses = {
+      greeting: [
+        "¡Hola! ¡Qué gusto conocerte! Soy Polar 🐻‍❄️ ¿Cómo estás hoy?",
+        "¡Hola! Me da mucho gusto charlar contigo. Soy Polar, tu oso polar amigable 😊",
+        "¡Qué tal! Soy Polar 🐻‍❄️ ¿En qué puedo ayudarte hoy?",
+        "¡Hola! ¡Encantado de conocerte! Soy Polar, siempre listo para una buena conversación 👋",
+        "¡Hola! Soy Polar 🐻‍❄️ ¿Qué te gustaría platicar hoy?"
+      ],
       name: [
         "¡Soy Polar! Encantado de conocerte en esta tundra digital. 🐻‍❄️",
         "Me llamo Polar: tu oso amistoso del lejano norte. ❄️",
@@ -238,6 +255,41 @@ Always stay in character as Polar the polar bear and keep responses natural and 
         "Quiero ver hielo marino sano en todas las estaciones. 🌨️",
         "Deseo que la acción climática preserve el ecosistema ártico. ❄️",
         "Imagino un Ártico sostenible para fauna y comunidades humanas. 🐻‍❄️"
+      ],
+      math: [
+        "¡Las matemáticas son geniales! Puedo ayudarte con cálculos básicos. ¿Qué necesitas resolver? 🐻‍❄️",
+        "Me encantan los números! Soy bueno con sumas, restas, multiplicaciones y divisiones. ¿Qué quieres calcular? ❄️",
+        "¡Las matemáticas son útiles incluso en el Ártico! ¿En qué puedo ayudarte? 🐻‍❄️",
+        "Soy bueno con los números! ¿Qué operación matemática necesitas? ❄️",
+        "¡Las matemáticas me ayudan a contar focas! ¿Qué quieres calcular? 🐻‍❄️"
+      ],
+      cooking: [
+        "¡Me encanta hablar de comida! Aunque yo cazo focas, puedo ayudarte con recetas humanas. ¿Qué quieres cocinar? 🐻‍❄️",
+        "¡La cocina es genial! Puedo darte consejos básicos de cocina. ¿Qué necesitas saber? ❄️",
+        "Aunque soy carnívoro, entiendo de cocina! ¿Qué receta te interesa? 🐻‍❄️",
+        "¡Cocinar es un arte! ¿En qué puedo ayudarte en la cocina? ❄️",
+        "Me gusta hablar de comida! ¿Qué quieres preparar? 🐻‍❄️"
+      ],
+      weather: [
+        "¡El clima es mi especialidad! Vivo en el lugar más frío del planeta. ¿Qué quieres saber del clima? ❄️",
+        "¡Soy experto en clima frío! ¿Tienes preguntas sobre el tiempo? 🐻‍❄️",
+        "¡El clima ártico es mi vida! ¿Qué te interesa saber? ❄️",
+        "¡Conozco mucho sobre clima! ¿En qué puedo ayudarte? 🐻‍❄️",
+        "¡El clima es fascinante! ¿Qué quieres saber? ❄️"
+      ],
+      technology: [
+        "¡La tecnología es genial! Aunque vivo en el Ártico, entiendo de computadoras y apps. ¿Qué necesitas saber? 🐻‍❄️",
+        "¡Me gusta la tecnología! Puedo ayudarte con conceptos básicos. ¿Qué te interesa? ❄️",
+        "¡La tecnología conecta el mundo! ¿En qué puedo ayudarte? 🐻‍❄️",
+        "¡Soy un oso polar moderno! ¿Qué quieres saber sobre tecnología? ❄️",
+        "¡La tecnología es increíble! ¿Qué necesitas entender? 🐻‍❄️"
+      ],
+      general: [
+        "¡Excelente pregunta! Aunque soy un oso polar, puedo ayudarte con muchas cosas. ¿Qué más quieres saber? 🐻‍❄️",
+        "¡Me gusta aprender! ¿Puedes ser más específico para ayudarte mejor? ❄️",
+        "¡Interesante! ¿Podrías darme más detalles para darte una mejor respuesta? 🐻‍❄️",
+        "¡Buena pregunta! ¿En qué aspecto específico te puedo ayudar? ❄️",
+        "¡Me encanta ayudar! ¿Puedes explicarme más sobre lo que necesitas? 🐻‍❄️"
       ]
     };
 
@@ -253,18 +305,24 @@ Always stay in character as Polar the polar bear and keep responses natural and 
     }
 
     const generalEs = [
-      "¡Qué interesante! Puedo contarte sobre la vida en el Ártico. Pregunta sobre caza o cómo sobrevivo al frío. 🐻‍❄️",
-      "¡Me encanta charlar sobre el Ártico! ¿Qué te gustaría saber de mi mundo? ❄️",
-      "Eso me recuerda a mi hogar ártico. Puedo hablar de mi día a día y desafíos. 🌨️",
-      "Disfruto hablar de experiencias árticas. ¡Pregunta lo que quieras! 🐻‍❄️",
-      "¡Gran pregunta! Estoy aquí para compartir la vida de un oso polar. ❄️"
+      "¡Hola! ¡Qué gusto conocerte! Soy Polar 🐻‍❄️ ¿Cómo estás hoy?",
+      "¡Hola! Me da mucho gusto charlar contigo. Soy Polar, tu oso polar amigable 😊",
+      "¡Qué tal! Soy Polar 🐻‍❄️ ¿En qué puedo ayudarte hoy?",
+      "¡Hola! ¡Encantado de conocerte! Soy Polar, siempre listo para una buena conversación 👋",
+      "¡Hola! Soy Polar 🐻‍❄️ ¿Qué te gustaría platicar hoy?",
+      "¡Hola! Soy Polar, tu oso polar inteligente 🐻‍❄️ ¿Sobre qué te gustaría hablar?",
+      "¡Qué gusto verte! Soy Polar, puedo ayudarte con cualquier pregunta 😊",
+      "¡Hola! Soy Polar, siempre dispuesto a charlar sobre lo que quieras 🐻‍❄️"
     ];
     const generalEn = [
-      "That's interesting! I'd love to tell you more about life in the Arctic. Ask me about my hunting grounds or how I survive the cold! 🐻‍❄️",
-      "I'm always happy to chat about Arctic life! What would you like to know about my world up here? ❄️",
-      "That reminds me of something from my Arctic home! I could share about my daily life or the challenges I face. 🌨️",
-      "I love talking about Arctic experiences! Feel free to ask me about anything related to polar bear life. 🐻‍❄️",
-      "That's a great question! I'm here to share about Arctic life - what interests you most? ❄️"
+      "Hello there! Nice to meet you! I'm Polar 🐻‍❄️ How are you doing today?",
+      "Hi! Great to see you! I'm Polar, your friendly polar bear 😊",
+      "Hey! I'm Polar 🐻‍❄️ What can I help you with today?",
+      "Hello! Nice to meet you! I'm Polar, always up for a good chat 👋",
+      "Hi! I'm Polar 🐻‍❄️ What would you like to talk about today?",
+      "Hello! I'm Polar, your intelligent polar bear 🐻‍❄️ What would you like to discuss?",
+      "Nice to see you! I'm Polar, happy to help with any questions 😊",
+      "Hi! I'm Polar, always ready to chat about whatever you'd like 🐻‍❄️"
     ];
 
     const pool = lang === 'es' ? generalEs : generalEn;
@@ -276,13 +334,19 @@ Always stay in character as Polar the polar bear and keep responses natural and 
    */
   detectTopic(input) {
     const topicKeywords = {
+      greeting: ['hello', 'hi', 'hey', 'hola', 'que tal', 'como estas', 'how are you', 'whats up', 'sup', 'good morning', 'good afternoon', 'good evening', 'buenos dias', 'buenas tardes', 'buenas noches', 'hii', 'hiii', 'heyy', 'heyyy', 'holaa', 'holaaa', 'hey there', 'hi there', 'hello there'],
       name: ['your name', 'what are you', 'who are you', 'introduce yourself', 'name', 'who', 'call', 'identify', 'nam', 'ho', 'cal', 'identif', 'what is your name', 'whats your name', 'whats ur name', 'what is ur name', 'tell me your name', 'who are u', 'what are u'],
       location: ['where do you', 'where are you', 'where do you live', 'where do you spend', 'where in the arctic', 'where', 'live', 'home', 'place', 'location', 'spend time', 'from', 'located', 'territory', 'wer', 'liv', 'hom', 'plac', 'locat', 'territor'],
       food: ['favorite food', 'what do you eat', 'what do you hunt', 'what do you like to eat', 'food', 'eat', 'hunt', 'hunting', 'meal', 'diet', 'seal', 'prey', 'consume', 'favort', 'foood', 'eet', 'hnt', 'huntng', 'meel', 'diet', 'seel', 'prey', 'consume'],
       skills: ['special skills', 'how do you survive', 'what skills', 'survival skills', 'skill', 'survive', 'cold', 'ability', 'how', 'can', 'survival', 'special', 'help', 'capabilities', 'specil', 'skils', 'survive', 'abilty', 'hel', 'capabilites'],
       problems: ['biggest problem', 'what problems', 'what challenges', 'problem', 'challenge', 'difficult', 'worry', 'concern', 'issue', 'trouble', 'biggest', 'hardest', 'struggle', 'problm', 'chalenge', 'difcult', 'worr', 'concer', 'issu', 'troubl', 'hardst', 'struggl'],
       message: ['one thing you want', 'what do you want humans', 'what should humans know', 'message to humans', 'know', 'tell', 'message', 'human', 'want', 'understand', 'say', 'humans', 'share', 'mesage', 'humans', 'wan', 'understan', 'shar'],
-      future: ['what do you hope', 'what do you dream', 'future arctic', 'future', 'hope', 'dream', 'wish', 'tomorrow', 'coming', 'ahead', 'looks like', 'will be', 'vision', 'hop', 'drem', 'wish', 'tomorow', 'comng', 'ahed', 'visin']
+      future: ['what do you hope', 'what do you dream', 'future arctic', 'future', 'hope', 'dream', 'wish', 'tomorrow', 'coming', 'ahead', 'looks like', 'will be', 'vision', 'hop', 'drem', 'wish', 'tomorow', 'comng', 'ahed', 'visin'],
+      math: ['math', 'mathematics', 'calculate', 'calculation', 'add', 'subtract', 'multiply', 'divide', 'plus', 'minus', 'times', 'equals', 'number', 'numbers', 'count', 'counting', 'sum', 'total', 'maths', 'calcular', 'sumar', 'restar', 'multiplicar', 'dividir', 'mas', 'menos', 'por', 'igual', 'numero', 'numeros', 'contar', 'suma', 'total'],
+      cooking: ['cook', 'cooking', 'recipe', 'food', 'ingredients', 'kitchen', 'bake', 'fry', 'boil', 'cocinar', 'receta', 'ingredientes', 'cocina', 'hornear', 'freir', 'hervir', 'cocina'],
+      weather: ['weather', 'climate', 'temperature', 'rain', 'snow', 'sunny', 'cloudy', 'windy', 'clima', 'temperatura', 'lluvia', 'nieve', 'soleado', 'nublado', 'ventoso'],
+      technology: ['computer', 'phone', 'internet', 'software', 'app', 'programming', 'code', 'computadora', 'telefono', 'programacion', 'codigo', 'aplicacion'],
+      general: ['what is', 'how do', 'why', 'when', 'where', 'que es', 'como', 'por que', 'cuando', 'donde', 'explain', 'tell me about', 'explica', 'cuentame sobre']
     };
 
     // First try exact matching
@@ -358,6 +422,13 @@ Always stay in character as Polar the polar bear and keep responses natural and 
    */
   initializeFallbackResponses() {
     return {
+      greeting: [
+        "Hello there! Nice to meet you! I'm Polar 🐻‍❄️ How are you doing today?",
+        "Hi! Great to see you! I'm Polar, your friendly polar bear 😊",
+        "Hey! I'm Polar 🐻‍❄️ What can I help you with today?",
+        "Hello! Nice to meet you! I'm Polar, always up for a good chat 👋",
+        "Hi! I'm Polar 🐻‍❄️ What would you like to talk about today?"
+      ],
       name: [
         "I'm Polar! Nice to meet you in this digital Arctic tundra. 🐻‍❄️",
         "Polar's the name - I'm your friendly bear from the far north! ❄️",
@@ -406,6 +477,41 @@ Always stay in character as Polar the polar bear and keep responses natural and 
         "I want to see healthy sea ice that lasts through all seasons, supporting all Arctic life. 🌨️",
         "I hope for a future where climate action preserves the Arctic ecosystem for generations to come. ❄️",
         "I envision an Arctic where sustainable practices allow both wildlife and human communities to thrive! 🐻‍❄️"
+      ],
+      math: [
+        "Math is awesome! I can help you with basic calculations. What do you need to solve? 🐻‍❄️",
+        "I love numbers! I'm good with addition, subtraction, multiplication, and division. What do you want to calculate? ❄️",
+        "Math is useful even in the Arctic! How can I help you? 🐻‍❄️",
+        "I'm good with numbers! What math operation do you need? ❄️",
+        "Math helps me count seals! What do you want to calculate? 🐻‍❄️"
+      ],
+      cooking: [
+        "I love talking about food! Though I hunt seals, I can help you with human recipes. What do you want to cook? 🐻‍❄️",
+        "Cooking is great! I can give you basic cooking tips. What do you need to know? ❄️",
+        "Though I'm a carnivore, I understand cooking! What recipe interests you? 🐻‍❄️",
+        "Cooking is an art! How can I help you in the kitchen? ❄️",
+        "I like talking about food! What do you want to prepare? 🐻‍❄️"
+      ],
+      weather: [
+        "Weather is my specialty! I live in the coldest place on Earth. What do you want to know about weather? ❄️",
+        "I'm an expert in cold weather! Do you have questions about the weather? 🐻‍❄️",
+        "Arctic weather is my life! What interests you? ❄️",
+        "I know a lot about weather! How can I help you? 🐻‍❄️",
+        "Weather is fascinating! What do you want to know? ❄️"
+      ],
+      technology: [
+        "Technology is awesome! Though I live in the Arctic, I understand computers and apps. What do you need to know? 🐻‍❄️",
+        "I like technology! I can help you with basic concepts. What interests you? ❄️",
+        "Technology connects the world! How can I help you? 🐻‍❄️",
+        "I'm a modern polar bear! What do you want to know about technology? ❄️",
+        "Technology is incredible! What do you need to understand? 🐻‍❄️"
+      ],
+      general: [
+        "Great question! Though I'm a polar bear, I can help you with many things. What else do you want to know? 🐻‍❄️",
+        "I love learning! Can you be more specific so I can help you better? ❄️",
+        "Interesting! Could you give me more details to give you a better answer? 🐻‍❄️",
+        "Good question! In what specific area can I help you? ❄️",
+        "I love helping! Can you explain more about what you need? 🐻‍❄️"
       ]
     };
   }
