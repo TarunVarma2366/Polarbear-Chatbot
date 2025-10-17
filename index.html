@@ -695,6 +695,123 @@
         grid-template-columns: 1fr;
       }
     }
+    
+    /* Blueprint styles */
+    #blueprintContainer {
+      display: none;
+      margin: 15px 30px 0 30px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2);
+      max-height: 35vh;
+      overflow-y: auto;
+    }
+
+    #blueprintContainer .blueprint-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    #blueprintContainer .blueprint-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    #blueprintContainer .blueprint-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    #blueprintContainer .blueprint-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 700px) {
+      #blueprintContainer .blueprint-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    #blueprintContainer .blueprint-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    #blueprintContainer .blueprint-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    #blueprintContainer .blueprint-list {
+      padding-left: 18px;
+      color: var(--text-secondary);
+    }
+
+    #blueprintContainer .blueprint-none {
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    #blueprintContainer .blueprint-reflection {
+      margin-top: 12px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    #blueprintContainer .blueprint-close {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+      border-radius: 8px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+      transition: var(--transition);
+    }
+
+    #blueprintContainer .blueprint-close:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: var(--primary-color);
+    }
+
+    #blueprintContainer .blueprint-toggle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+      border-radius: 8px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+      transition: var(--transition);
+      margin-left: 8px;
+    }
+
+    #blueprintContainer .blueprint-close:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: var(--primary-color);
+    }
+
+     /* Collapsed state hides content, leaves header visible */
+    #blueprintContainer.collapsed .blueprint-grid,
+    #blueprintContainer.collapsed .blueprint-empty,
+    #blueprintContainer.collapsed .blueprint-reflection {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -745,7 +862,9 @@
         </div>
       </div>
     </div>
-    
+     
+    <div id="blueprintContainer" aria-live="polite"></div>
+
     <div class="typing-indicator" id="typingIndicator">
       <span data-i18n="typing">Polar is thinking</span>
       <div class="typing-dots">
@@ -785,6 +904,10 @@
       <button id="resetButton" class="control-button">
         <i class="fas fa-refresh"></i>
         <span data-i18n="button.reset">New Chat</span>
+      </button>
+      <button id="blueprintButton" class="control-button">
+        <i class="fas fa-diagram-project"></i>
+        <span data-i18n="button.blueprint">Generate Blueprint</span>
       </button>
       <button id="langToggle" class="control-button" aria-label="Change language">
         <i class="fas fa-language"></i>
@@ -841,6 +964,20 @@
           'button.settings': 'Settings',
           'button.export': 'Export',
           'button.reset': 'New Chat',
+          'button.blueprint': 'Generate Blueprint',
+          'blueprint.title': 'Conversation Blueprint',
+          'blueprint.generatedAt': 'Generated at',
+          'blueprint.noData': 'No conversation yet. Send a message first.',
+          'blueprint.sections.identity': 'Identity',
+          'blueprint.sections.habitat': 'Habitat',
+          'blueprint.sections.diet': 'Diet',
+          'blueprint.sections.skills': 'Skills',
+          'blueprint.sections.challenges': 'Challenges',
+          'blueprint.sections.message': 'Message to Humans',
+          'blueprint.sections.future': 'Future & Hopes',
+          'blueprint.reflection': "Here's what I learned about the polar bear today.",
+          'blueprint.close': 'Close',
+          'blueprint.collapse': 'Collapse',
           'settings.aiMode': 'AI Mode',
           'settings.autoSave': 'Auto-save',
           'settings.apiKey': 'API Key',
@@ -863,6 +1000,20 @@
           'button.settings': 'Configuración',
           'button.export': 'Exportar',
           'button.reset': 'Nuevo chat',
+          'button.blueprint': 'Generar Plano',
+          'blueprint.title': 'Plano de la Conversación',
+          'blueprint.generatedAt': 'Generado a las',
+          'blueprint.noData': 'Aún no hay conversación. Envía un mensaje primero.',
+          'blueprint.sections.identity': 'Identidad',
+          'blueprint.sections.habitat': 'Hábitat',
+          'blueprint.sections.diet': 'Dieta',
+          'blueprint.sections.skills': 'Habilidades',
+          'blueprint.sections.challenges': 'Desafíos',
+          'blueprint.sections.message': 'Mensaje a los Humanos',
+          'blueprint.sections.future': 'Futuro y Esperanzas',
+          'blueprint.reflection': 'Esto es lo que aprendí del oso polar hoy.',
+          'blueprint.close': 'Cerrar',
+          'blueprint.collapse': 'Contraer',
           'settings.aiMode': 'Modo IA',
           'settings.autoSave': 'Auto-guardar',
           'settings.apiKey': 'Clave API',
@@ -964,6 +1115,7 @@
   <script src="js/database.js"></script>
   <script src="js/ai-service.js"></script>
   <script src="js/chat-manager.js"></script>
+  <script src="js/blueprint-generator.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
